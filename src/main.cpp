@@ -42,6 +42,10 @@ void handle_json_serial()
       serializeJson(doc, data);
       EEPROM.writeString(0, data);
       EEPROM.commit();
+      Serial.println("Insert Berhasil ... ");
+    }
+    else{
+      Serial.println("Insert gagal ... ");
     }
 
     if (read_config != "null")
@@ -49,16 +53,19 @@ void handle_json_serial()
       DynamicJsonDocument jsonRead(1024);
 
       String dataJsonRead = EEPROM.readString(0);
-      deserializeJson(jsonRead, dataJsonRead);
+      deserializeJson(jsonRead, dataJsonRead); //convert to json from dataJsonRead as string 
       JsonObject object = jsonRead.as<JsonObject>();
 
       if (!object.isNull())
       {
+        Serial.print("read config: ");
         String result = jsonRead["SET_CONFIG"];
         Serial.println(result);
       }
+      else{
+        Serial.println("null");
+      }
 
-      Serial.print("read config: ");
       Serial.println();
     }
   }
